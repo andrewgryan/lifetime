@@ -5,8 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Lifetime</title>
     <link rel="stylesheet" href="style.css" />
+    <script src="https://unpkg.com/htmx.org@2.0.0"></script>
   </head>
   <body>
-    <h1>Hello, rsync!</h1>
+    <main hx-get="/edit" hx-trigger="click">
+      <h1>Hello, rsync!</h1>
+    </main>
   </body>
 </html>

@@ -1,7 +1,14 @@
 const std = @import("std");
 const zap = @import("zap");
+const eql = std.mem.eql;
 
 fn on_request(r: zap.Request) void {
+    if (r.path) |path| {
+        if (eql(u8, path, "/edit")) {
+            r.sendBody("<h1>Edit</h1>") catch return;
+        }
+    }
+
     r.setStatus(.not_found);
     r.sendBody("<h1>404 - File not found</h1>") catch return;
 }
