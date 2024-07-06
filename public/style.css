@@ -11,3 +11,10 @@ body {
 main {
   min-height: 100svh;
 }
+
+textarea {
+  position: absolute;
+  inset: 0;
+  background-color: #333;
+  color: white;
+}
