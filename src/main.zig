@@ -5,7 +5,7 @@ const eql = std.mem.eql;
 fn on_request(r: zap.Request) void {
     if (r.path) |path| {
         if (eql(u8, path, "/edit")) {
-            r.sendBody("<h1>Edit</h1>") catch return;
+            r.sendFile("public/edit.html") catch return;
         }
     }
 

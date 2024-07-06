@@ -1,6 +1,9 @@
 #!/bin/bash
 set -x
 
+# Build executable
+zig build -Dtarget=aarch64-linux
+
 # Sync static assets
 rsync -vrz public/ zero:~/lifetime/public
 
