@@ -44,9 +44,11 @@ fn on_request(r: zap.Request) void {
     if (r.path) |path| {
         if (eql(u8, path, "/edit")) {
             r.sendFile("public/edit.html") catch return;
+            return;
         }
         if (eql(u8, path, "/render")) {
             handle_markdown(r) catch return;
+            return;
         }
     }
 

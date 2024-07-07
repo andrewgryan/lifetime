@@ -1,4 +1,13 @@
-<form class="editor" hx-post="/render" hx-swap="outerHTML">
-  <button class="save">Save</button>
-  <textarea id="content" name="content"># Edit</textarea>
-</form>
+<main class="editor">
+  <form hx-post="/render" hx-target="#preview">
+    <textarea
+      hx-post="/render"
+      hx-target="#preview"
+      hx-trigger="input changed delay:100ms"
+      id="content"
+      name="content"
+      placeholder="# Editor"
+    ></textarea>
+  </form>
+  <div id="preview" class="preview"></div>
+</main>
