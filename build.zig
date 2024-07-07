@@ -45,6 +45,10 @@ pub fn build(b: *std.Build) void {
 
     exe.root_module.addImport("zap", zap.module("zap"));
 
+    // Koino
+    const koino_pkg = b.dependency("koino", .{ .optimize = optimize, .target = target });
+    exe.root_module.addImport("koino", koino_pkg.module("koino"));
+
     // This declares intent for the executable to be installed into the
     // standard location when the user invokes the "install" step (the default
     // step when running `zig build`).
