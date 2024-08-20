@@ -1,13 +1,16 @@
-<main class="editor">
-  <form hx-post="/render" hx-target="#preview">
-    <textarea
-      hx-post="/render"
-      hx-target="#preview"
-      hx-trigger="input changed delay:100ms"
-      id="content"
-      name="content"
-      placeholder="# Editor"
-    ></textarea>
-  </form>
-  <div id="preview" class="preview"></div>
+<main>
+  <input type="radio" />
+  <div class="editor">
+    <form hx-post="/render" hx-target="#preview">
+      <textarea
+        hx-post="/render"
+        hx-target="#preview"
+        hx-trigger="input changed delay:100ms"
+        id="content"
+        name="content"
+        placeholder="# Editor"
+      ></textarea>
+    </form>
+    <div id="preview" class="preview"></div>
+  </div>
 </main>
