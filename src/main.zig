@@ -17,6 +17,11 @@ fn handle_markdown(r: zap.Request) !void {
     const param = try r.getParamStr(allocator, "content", false);
     const markdown = param.?.str;
 
+    // Write to file
+    const file = try std.fs.cwd().createFile("public/article.md", .{});
+    try file.writeAll(markdown);
+    defer file.close();
+
     // Convert markdown into HTML
 
     var arena = std.heap.ArenaAllocator.init(allocator);
@@ -43,11 +48,15 @@ fn handle_markdown(r: zap.Request) !void {
 fn on_request(r: zap.Request) void {
     if (r.path) |path| {
         if (eql(u8, path, "/edit")) {
-            r.sendFile("public/edit.html") catch return;
+            r.sendFile("public/index.html") catch return;
             return;
         }
         if (eql(u8, path, "/render")) {
             handle_markdown(r) catch return;
+            return;
+        }
+        if (eql(u8, path, "/article")) {
+            r.sendFile("public/article.md") catch return;
             return;
         }
     }
