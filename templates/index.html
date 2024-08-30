@@ -7,12 +7,7 @@
     <link rel="stylesheet" href="style.css" />
     <script src="https://unpkg.com/htmx.org@2.0.2"></script>
   </head>
-  <body
-    hx-get="/article"
-    hx-swap="innerHTML"
-    hx-trigger="load"
-    hx-target="#content"
-  >
+  <body>
     <main>
       <div class="tabs">
         <input type="radio" name="tab" id="edit" checked />
@@ -25,7 +20,9 @@
             id="content"
             name="content"
             placeholder="# Editor"
-          ></textarea>
+          >
+{s}</textarea
+          >
         </form>
         <input type="radio" name="tab" id="preview-tab" />
         <label for="preview-tab">Preview</label>

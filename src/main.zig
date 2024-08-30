@@ -45,10 +45,29 @@ fn handle_markdown(r: zap.Request) !void {
     r.sendBody(body) catch return;
 }
 
+fn handleIndex(r: zap.Request) !void {
+    // Memory allocator
+    var gpa = std.heap.GeneralPurposeAllocator(.{}){};
+    const allocator = gpa.allocator();
+    defer _ = gpa.deinit();
+
+    // Read index.html
+    const file = try std.fs.cwd().openFile("templates/index.html", .{});
+    defer file.close();
+
+    const max_bytes = 1000000;
+    const body = try file.readToEndAlloc(allocator, max_bytes);
+    defer allocator.free(body);
+    // Substitute text
+    // sendBody
+    return r.sendBody(body);
+    // return r.sendFile("public/index.html");
+}
+
 fn on_request(r: zap.Request) void {
     if (r.path) |path| {
-        if (eql(u8, path, "/edit")) {
-            r.sendFile("public/index.html") catch return;
+        if (eql(u8, path, "/")) {
+            handleIndex(r) catch return;
             return;
         }
         if (eql(u8, path, "/render")) {
