@@ -3,6 +3,8 @@ const zap = @import("zap");
 const koino = @import("koino");
 const eql = std.mem.eql;
 
+const index = @embedFile("./templates/index.html");
+
 fn handle_markdown(r: zap.Request) !void {
     // Memory allocator
     var gpa = std.heap.GeneralPurposeAllocator(.{}){};
@@ -51,14 +53,15 @@ fn handleIndex(r: zap.Request) !void {
     const allocator = gpa.allocator();
     defer _ = gpa.deinit();
 
-    // Read index.html
-    const file = try std.fs.cwd().openFile("templates/index.html", .{});
-    defer file.close();
-
+    // Read markdown
     const max_bytes = 1000000;
-    const body = try file.readToEndAlloc(allocator, max_bytes);
-    defer allocator.free(body);
+    const file = try std.fs.cwd().openFile("public/article.md", .{});
+    defer file.close();
+    const text = try file.readToEndAlloc(allocator, max_bytes);
+
     // Substitute text
+    const body = try std.fmt.allocPrint(allocator, index, .{text});
+    defer allocator.free(body);
     // sendBody
     return r.sendBody(body);
     // return r.sendFile("public/index.html");
