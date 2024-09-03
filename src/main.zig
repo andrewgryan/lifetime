@@ -15,7 +15,6 @@ fn handle_markdown(r: zap.Request) !void {
     r.parseBody() catch |err| {
         std.log.err("Parse body error: {any}. Expected if body empty.", .{err});
     };
-
     const param = try r.getParamStr(allocator, "content", false);
     const markdown = param.?.str;
 
@@ -24,8 +23,14 @@ fn handle_markdown(r: zap.Request) !void {
     try file.writeAll(markdown);
     defer file.close();
 
-    // Convert markdown into HTML
+    const body = try markdownToHTML(allocator, markdown);
 
+    r.sendBody(body) catch return;
+}
+
+fn markdownToHTML(allocator: std.mem.Allocator, markdown: []const u8) ![]u8 {
+
+    // Convert markdown into HTML
     var arena = std.heap.ArenaAllocator.init(allocator);
     defer arena.deinit();
 
@@ -43,8 +48,7 @@ fn handle_markdown(r: zap.Request) !void {
 
     try koino.html.print(chars.writer(), arena.allocator(), p.options, doc);
 
-    const body = try chars.toOwnedSlice();
-    r.sendBody(body) catch return;
+    return try chars.toOwnedSlice();
 }
 
 fn handleIndex(r: zap.Request) !void {
@@ -59,8 +63,11 @@ fn handleIndex(r: zap.Request) !void {
     defer file.close();
     const text = try file.readToEndAlloc(allocator, max_bytes);
 
+    // HTML representation
+    const html = try markdownToHTML(allocator, text);
+
     // Substitute text
-    const body = try std.fmt.allocPrint(allocator, index, .{text});
+    const body = try std.fmt.allocPrint(allocator, index, .{ text, html });
     defer allocator.free(body);
     // sendBody
     return r.sendBody(body);
