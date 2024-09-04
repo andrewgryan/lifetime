@@ -8,14 +8,24 @@
   --bg: #1098ad;
   --ph: oklch(from var(--bg) calc(1.25 * l) c h);
   --size-1: 0.125rem;
+  --h: 52;
+  --surface-1: oklch(from blue 10% 0.1 h);
+  --text-1: oklch(from blue 85% 0.1 h);
 }
 
 body {
   margin: 0;
   font-family: system-ui;
+  background-color: var(--surface-1);
+  color: var(--text-1);
+}
+
+p {
+  line-height: 1.75;
 }
 
 textarea {
+  color: inherit;
   background-color: transparent;
   border-color: transparent;
   width: 100%;
@@ -52,7 +62,7 @@ textarea::placeholder {
     display: block;
   }
   & input[type="radio"]:checked + label {
-    border-block-end: 2px solid green;
+    border-block-end: 2px solid var(--text-1);
   }
   & input[type="radio"]:checked + label + .tab-content {
     display: block;
