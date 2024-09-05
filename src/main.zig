@@ -88,6 +88,14 @@ fn on_request(r: zap.Request) void {
             r.sendFile("public/article.md") catch return;
             return;
         }
+
+        // Page
+        if (std.mem.startsWith(u8, path, "/page")) {
+            if (r.method) |method| {
+                r.sendBody(method) catch return;
+            }
+            return;
+        }
     }
 
     r.setStatus(.not_found);

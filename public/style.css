@@ -4,6 +4,22 @@
   box-sizing: border-box;
 }
 
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  text-wrap: balance;
+}
+
+p,
+li,
+figcaption {
+  max-width: 65ch;
+  text-wrap: pretty;
+}
+
 :root {
   --bg: #1098ad;
   --ph: oklch(from var(--bg) calc(1.25 * l) c h);
