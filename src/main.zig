@@ -74,6 +74,13 @@ fn handleIndex(r: zap.Request) !void {
     // return r.sendFile("public/index.html");
 }
 
+fn handlePage(r: zap.Request) !void {
+    if (r.path) |path| {
+        return r.sendBody(path[5..]);
+    }
+    return r.sendBody("Handle page!");
+}
+
 fn on_request(r: zap.Request) void {
     if (r.path) |path| {
         if (eql(u8, path, "/")) {
@@ -91,9 +98,7 @@ fn on_request(r: zap.Request) void {
 
         // Page
         if (std.mem.startsWith(u8, path, "/page")) {
-            if (r.method) |method| {
-                r.sendBody(method) catch return;
-            }
+            handlePage(r) catch return;
             return;
         }
     }

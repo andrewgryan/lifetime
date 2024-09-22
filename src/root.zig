@@ -21,3 +21,13 @@ test "string substitution" {
     const expected = "hello, world";
     try testing.expect(eql(u8, actual, expected));
 }
+
+fn getParam(prefix: []const u8, path: []const u8) []const u8 {
+    return path[prefix.len..];
+}
+
+test "path parameter" {
+    const actual = getParam("/", "/foo");
+    const expected = "foo";
+    try testing.expect(eql(u8, actual, expected));
+}
